@@ -13,7 +13,7 @@ async def get_prefix(client, message):
     if message.guild is None:
         return '.'
 
-    with open('cogs/prefixes.json', 'r') as f:
+    with open('data/prefixes.json', 'r') as f:
         prefixes = json.load(f)
     # if theres nothing in the file, it will be a . until changed
     return prefixes.get(str(message.guild.id), '.')
