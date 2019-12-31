@@ -28,6 +28,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.has_role("Moderators")
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount + 1)
 
@@ -63,7 +64,7 @@ class Commands(commands.Cog):
 
     @commands.command(aliases=["changeprefix"])
     @commands.has_role("Moderators")
-    async def changePrefix(self, ctx, prefix):
+    async def change_prefix(self, ctx, prefix):
         with open('cogs/prefixes.json', 'r') as f:
             prefixes = json.load(f)
 
