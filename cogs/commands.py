@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+
 import json
 import random
 
@@ -127,6 +128,9 @@ class Commands(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["git","gh"])
+    async def github(self,ctx):
+        await ctx.send("https://github.com/JustCasuallyJames")
 
 def setup(client):
     client.add_cog(Commands(client))
