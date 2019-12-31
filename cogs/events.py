@@ -66,6 +66,17 @@ class Events(commands.Cog):
     async def on_member_remove(self, member):
         print(f'{member} has left the server.')
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        # So if there ever a time where you need to want to say a certain thing for a certain error, do this.
+        # if isinstance(error, commands.MissingRole):
+        # This would give an error message if it hasn't passed all the necessary inputs
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("You're missing an input")
+
+        #     await ctx.send("Unfortunately, you can't change the prefix.")
+        # await ctx.send("You don't have the required permissions.")
+
 
 def setup(client):
     client.add_cog(Events(client))
