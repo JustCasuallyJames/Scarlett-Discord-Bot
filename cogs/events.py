@@ -1,6 +1,9 @@
+import sys
+
 import discord
 from discord.ext import commands
 import json
+import traceback
 
 
 class Events(commands.Cog):
@@ -74,6 +77,8 @@ class Events(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("You're missing an input")
 
+        print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
+        traceback.print_exception(type(error), error, error.__traceback__, file = sys.stderr)
         #     await ctx.send("Unfortunately, you can't change the prefix.")
         # await ctx.send("You don't have the required permissions.")
 
