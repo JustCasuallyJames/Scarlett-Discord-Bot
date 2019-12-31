@@ -71,16 +71,17 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        # So if there ever a time where you need to want to say a certain thing for a certain error, do this.
-        # if isinstance(error, commands.MissingRole):
         # This would give an error message if it hasn't passed all the necessary inputs
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("You're missing an input")
-
+            return await ctx.send("You're missing an input")
+        # Happens when a member without the required role tries to type a command.
+        if isinstance(error, commands.MissingRole):
+            return await ctx.send(f"You don't have the **{error.missing_role}** role that is required to do this.")
+        # Happens when a member puts in the wrong argument into the command
+        if isinstance(error, commands.BadArgument):
+            return await ctx.send(f"{error}")
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
-        traceback.print_exception(type(error), error, error.__traceback__, file = sys.stderr)
-        #     await ctx.send("Unfortunately, you can't change the prefix.")
-        # await ctx.send("You don't have the required permissions.")
+        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 
 def setup(client):
