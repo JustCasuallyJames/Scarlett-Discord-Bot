@@ -1,9 +1,10 @@
-import sys
-
 import discord
 from discord.ext import commands
+
 import json
+import sys
 import traceback
+
 
 
 class Events(commands.Cog):
@@ -80,6 +81,14 @@ class Events(commands.Cog):
         # Happens when a member puts in the wrong argument into the command
         if isinstance(error, commands.BadArgument):
             return await ctx.send(f"{error}")
+        if isinstance(error, commands.UnexpectedQuoteError):
+            return await ctx.send('There is a random quotation mark.')
+        if isinstance(error, commands.InvalidEndOfQuotedStringError):
+            return await ctx.send('Word(s) are being written after two "".')
+        if isinstance(error, commands.ExpectedClosingQuoteError):
+            return await ctx.send('There is no closing quote.')
+        if isinstance(error, commands.CommandNotFound):
+            return
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
