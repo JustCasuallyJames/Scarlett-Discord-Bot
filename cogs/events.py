@@ -18,7 +18,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        with open('cogs/prefixes.json', 'r') as f:
+        with open('data/prefixes.json', 'r') as f:
             prefixes = json.load(f)
         if message.content.startswith('mc'):
             await message.channel.send('No fuck you')
@@ -29,22 +29,22 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        with open('cogs/prefixes.json', 'r') as f:
+        with open('data/prefixes.json', 'r') as f:
             prefixes = json.load(f)
 
         prefixes[str(guild.id)] = '.'
 
-        with open('cogs/prefixes.json', 'w') as f:
+        with open('data/prefixes.json', 'w') as f:
             json.dump(prefixes, f, indent=4)
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        with open('cogs/prefixes.json', 'r') as f:
+        with open('data/prefixes.json', 'r') as f:
             prefixes = json.load(f)
 
         prefixes.pop(str(guild.id))
 
-        with open('cogs/prefixes.json', 'w') as f:
+        with open('data/prefixes.json', 'w') as f:
             json.dump(prefixes, f, indent=4)
 
     @commands.Cog.listener()
