@@ -1,0 +1,7 @@
+RELEASE NOTES:
+
+1/2/2020:
+-Added leveling system for the members
+-Members can type to earn xp to level up
+-Stored into users database
+-Fixed minor spacing/useless imports
