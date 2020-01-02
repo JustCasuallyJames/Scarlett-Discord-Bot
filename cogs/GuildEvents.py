@@ -3,6 +3,7 @@ from discord.ext import commands
 
 import json
 
+
 class GuildEvents(commands.Cog):
 
     def __init__(self, client):
@@ -50,6 +51,7 @@ class GuildEvents(commands.Cog):
 
         with open('data/prefixes.json', 'w') as f:
             json.dump(prefixes, f, indent=4)
+
 
 def setup(client):
     client.add_cog(GuildEvents(client))

@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 
 import json
-import sys
-import traceback
 
 
 class MiscEvents(commands.Cog):

@@ -23,6 +23,7 @@ class MiscCommands(commands.Cog):
                                             "Make sure to do **.8ball [Insert question]**", inline=False)
         embed.add_field(name='About', value="Make sure to do **.about**", inline=False)
         embed.add_field(name='Current Prefix', value="Make sure to type **prefix**", inline=False)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def about(self, ctx):
@@ -41,7 +42,6 @@ class MiscCommands(commands.Cog):
         embed.add_field(name='Music', value="To get started, do **.play**", inline=False)
         embed.add_field(name='Games', value="Try doing **.games**", inline=False)
         await ctx.send(embed=embed)
-
 
 
 def setup(client):

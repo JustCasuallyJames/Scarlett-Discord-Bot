@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
 
+import asyncpg
 import json
 import os
 
-import discordKey
+from important import discordKey as token
+from important import dbpass as dbkey
 
 
 # Make an array of tuples, by name and then command function, and use that to call the commands in your message event
@@ -12,7 +14,6 @@ async def get_prefix(client, message):
     # del client
     if message.guild is None:
         return '.'
-
     with open('data/prefixes.json', 'r') as f:
         prefixes = json.load(f)
     # if theres nothing in the file, it will be a . until changed
@@ -21,6 +22,11 @@ async def get_prefix(client, message):
 
 client = commands.Bot(command_prefix=get_prefix, activity=discord.Game(name=".help"))
 client.remove_command('help')
+
+
+async def create_db_pool():
+    # changed the default port to 8131
+    client.pg_con = await asyncpg.create_pool(database="levelDB", user="postgres", password=dbkey.key, port=8131)
 
 
 @client.command()
@@ -69,4 +75,5 @@ for filename in os.listdir("./cogs"):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run(discordKey.key)
+client.loop.run_until_complete(create_db_pool())
+client.run(token.key)
