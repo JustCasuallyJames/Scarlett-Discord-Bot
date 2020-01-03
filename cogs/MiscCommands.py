@@ -23,10 +23,7 @@ class MiscCommands(commands.Cog):
                                             "Make sure to do **.8ball [Insert question]**", inline=False)
         embed.add_field(name='About', value="Make sure to do **.about**", inline=False)
         embed.add_field(name='Current Prefix', value="Make sure to type **prefix**", inline=False)
-<<<<<<< HEAD
         await ctx.send(embed=embed)
-=======
->>>>>>> master
 
     @commands.command()
     async def about(self, ctx):
@@ -47,11 +44,10 @@ class MiscCommands(commands.Cog):
         await ctx.send(embed=embed)
 
 
-<<<<<<< HEAD
 def setup(client):
     client.add_cog(MiscCommands(client))
-=======
+
 
 def setup(client):
     client.add_cog(MiscCommands(client))
->>>>>>> master
+
