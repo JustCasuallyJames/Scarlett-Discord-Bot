@@ -26,7 +26,7 @@ client.remove_command('help')
 
 async def create_db_pool():
     # changed the default port to 8131
-    client.pg_con = await asyncpg.create_pool(database="levelDB", user="postgres", password=dbkey.key, port=8131)
+    client.pg_con = await asyncpg.create_pool(database="EconomyDB", user="postgres", password=dbkey.key, port=8131)
 
 
 @client.command()

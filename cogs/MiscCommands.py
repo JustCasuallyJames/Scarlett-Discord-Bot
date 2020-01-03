@@ -2,6 +2,9 @@ import discord
 from discord.ext import commands
 
 
+from cogs import Levels
+
+
 class MiscCommands(commands.Cog):
 
     def __init__(self, client):
@@ -43,11 +46,42 @@ class MiscCommands(commands.Cog):
         embed.add_field(name='Games', value="Try doing **.games**", inline=False)
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["stats"])
+    async def profile(self, ctx):
+        level = await self.client.pg_con.fetchval(
+            # LIMIT 1 is necessary for SELECT statements so no duplicate records
+            """
+            SELECT lvl FROM levels.users
+            WHERE user_id = $1 AND guild_id = $2
+            LIMIT 1
+            """, ctx.message.author.id, ctx.message.guild.id
+        )
+        xp = await self.client.pg_con.fetchval(
+            """
+            SELECT xp FROM levels.users 
+            WHERE user_id = $1 AND guild_id = $2
+            LIMIT 1
+            """, ctx.message.author.id, ctx.message.guild.id
+        )
+        embed = discord.Embed(
+            author=f"{ctx.message.author.name}",
+            colour=discord.Colour.blue()
+        )
+        embed.set_author(name= f"{ctx.message.author.name}", icon_url=f"{ctx.message.author.avatar_url}")
+        embed.set_thumbnail(
+            url=f"{ctx.message.author.avatar_url}")
+        embed.add_field(name='Level', value=f"{Levels.xptolvl(xp)}", inline=True)
+        embed.add_field(name='XP',
+                        value=f"Current exp: {xp-Levels.lvltoxp(level)} out of {Levels.lvltoxp(level+1)-Levels.lvltoxp(level)}",
+                        inline=True)
+        embed.add_field(name='Wallet',
+                        value=f"35 coins",
+                        inline=False)
+
+        await ctx.send(embed=embed)
+
+
+
 
 def setup(client):
     client.add_cog(MiscCommands(client))
-
-
-def setup(client):
-    client.add_cog(MiscCommands(client))
-

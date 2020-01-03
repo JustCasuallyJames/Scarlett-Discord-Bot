@@ -3,6 +3,7 @@ from discord.ext import commands
 
 import json
 
+
 class GuildFunctions(commands.Cog):
 
     def __init__(self, client):
@@ -14,14 +15,10 @@ class GuildFunctions(commands.Cog):
         with open('cogs/prefixes.json', 'r') as f:
             prefixes = json.load(f)
 
-        # role = discord.utils.get(ctx.author.roles, name="Moderators")
-        # if role in ctx.author.roles:
         if len(prefix) == 1:
             prefixes[str(ctx.guild.id)] = prefix
         else:
             await ctx.send("You can't put a prefix that's more than one character!")
-        # else:
-        #     await ctx.send(f"Unfortunately, you can't change the prefix.")
 
         with open('cogs/prefixes.json', 'w') as f:
             json.dump(prefixes, f, indent=4)
@@ -29,10 +26,6 @@ class GuildFunctions(commands.Cog):
             description=f"The changed prefix is: {prefixes[str(ctx.guild.id)]}",
             colour=discord.Colour.purple()
         )
-        # embed.set_author(name="Scarlett",
-        #                  icon_url='https://cdn.discordapp.com/attachments/640127172148985861/661150910055186472/spider.png')
-        await ctx.send(embed=embed)
-
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["addrole"])
@@ -58,6 +51,7 @@ class GuildFunctions(commands.Cog):
             colour=discord.Colour.red()
         )
         await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(GuildFunctions(client))
