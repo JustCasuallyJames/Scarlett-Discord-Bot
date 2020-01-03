@@ -5,3 +5,12 @@ RELEASE NOTES:
 -Members can type to earn xp to level up
 -Stored into users database
 -Fixed minor spacing/useless imports
+
+1/3/2020:
+-Cleaned up the Leveling cog
+-Changed the lvltoxp() from round() to ceiling to fix some minor errors
+-Added profile function that displays their own stats
+-Added daily function so the user can obtain money
+-Fixed bugs within the leveling system
+-Now the leveling system correctly displays amount of exp needed to get to the next level
+
