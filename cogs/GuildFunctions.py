@@ -40,9 +40,7 @@ class GuildFunctions(commands.Cog):
     # The * causes role to hold the user input text after the member name, including any interior whitespace.
     # This lets the user write the following to add the "My Little Pony" role to hogarth: .addrole @hogarth My Little Pony
     async def add_roles(self, ctx, member: discord.Member, *, role: discord.Role):
-        # role = discord.utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
-        # await member.send(f"You've been awarded the **{role}** role")
         embed = discord.Embed(
             title="**Role added**",
             description=f"{member.mention} awarded the **{role}** role",
