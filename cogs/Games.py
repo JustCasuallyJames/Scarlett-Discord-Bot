@@ -1,7 +1,7 @@
+import random
+
 import discord
 from discord.ext import commands
-
-import random
 
 
 class Games(commands.Cog):
@@ -38,6 +38,28 @@ class Games(commands.Cog):
                          'Outlook not so good.',
                          'Very doubtful']
             await ctx.send(f"Question: {question}\nAnswer: {random.choice(responses)}")
+
+    @commands.command()
+    async def coinflip(self, ctx, choice: str, *, gamble: int):
+        member = ctx.message.author
+        guild_id = ctx.message.guild.id
+        cog = self.client.get_cog("Money")
+        bank = await cog.get_coins(member.id, guild_id)
+
+        HEAD_CHOICES = ("Heads", "heads", "h", "hd", "head")
+        TAIL_CHOICES = ("Tails", "tails", "t", "tl", "tail")
+        # 1 is heads 0 is tails
+        if gamble > bank:
+            await ctx.send("You do not have sufficient funds.")
+            return
+
+        winning_answers = random.choice([HEAD_CHOICES, TAIL_CHOICES])
+        if choice in winning_answers:
+            await cog.add_coins(member.id, guild_id, gamble)
+            await ctx.send(f"Flip: {winning_answers[0]}. You won {gamble} coins!")
+        else:
+            await cog.sub_coins(member.id, guild_id, gamble)
+            await ctx.send(f"Flip: {winning_answers[0]}. You lost {gamble} coins!")
 
 
 def setup(client):

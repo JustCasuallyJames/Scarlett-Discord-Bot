@@ -39,7 +39,7 @@ class Levels(commands.Cog):
         lvl = xptolvl(xp)
         if self.is_lvl_up(xp, lvl):
             await self.client.pg_con.execute(
-                "UPDATE users SET lvl = $1 WHERE user_id = $2 AND guild_id =$3",
+                "UPDATE levels.users SET lvl = $1 WHERE user_id = $2 AND guild_id =$3",
                 xptolvl(xp), message.author.id, message.guild.id
             )
             await message.channel.send(f"{message.author.mention} is now level {lvl}")

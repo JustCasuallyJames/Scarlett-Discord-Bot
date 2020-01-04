@@ -26,6 +26,8 @@ class MiscCommands(commands.Cog):
                                             "Make sure to do **.8ball [Insert question]**", inline=False)
         embed.add_field(name='About', value="Make sure to do **.about**", inline=False)
         embed.add_field(name='Current Prefix', value="Make sure to type **prefix**", inline=False)
+        embed.add_field(name='Daily', value="Make sure to type **.daily**", inline=False)
+        embed.add_field(name='Profile', value="Make sure to type **.profile** to see your stats!", inline=False)
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -63,6 +65,13 @@ class MiscCommands(commands.Cog):
             LIMIT 1
             """, ctx.message.author.id, ctx.message.guild.id
         )
+        money = await self.client.pg_con.fetchval(
+            """
+            SELECT money FROM money.bank
+            WHERE user_id = $1 AND guild_id = $2
+            LIMIT 1
+            """, ctx.message.author.id, ctx.message.guild.id
+        )
         embed = discord.Embed(
             author=f"{ctx.message.author.name}",
             colour=discord.Colour.blue()
@@ -75,12 +84,10 @@ class MiscCommands(commands.Cog):
                         value=f"Current exp: {xp-Levels.lvltoxp(level)} out of {Levels.lvltoxp(level+1)-Levels.lvltoxp(level)}",
                         inline=True)
         embed.add_field(name='Wallet',
-                        value=f"35 coins",
+                        value=f"{money} coins",
                         inline=False)
 
         await ctx.send(embed=embed)
-
-
 
 
 def setup(client):
