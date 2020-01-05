@@ -2,10 +2,18 @@ import discord
 from discord.ext import commands
 
 import math
+import decimal
+
+decimal.getcontext().prec = 28
 
 
 def xptolvl(xp):
-    return math.floor(((5 / 4) * xp) ** (1 / 3))
+    # number = (((5 / 4) * xp) ** 1 / 3) * 1000000000000000
+    # whole_number = math.floor(((5 / 4) * xp) ** 1 / 3) * 1000000000000000
+    # if number - whole_number == 999999999999999:
+    #     print("working......")
+    #     return math.ceil(((5 / 4) * xp) ** .3333333333333)
+    return math.floor(((5/4)*xp)**(1/3))
 
 
 def lvltoxp(lvl):
@@ -45,7 +53,9 @@ class Levels(commands.Cog):
         )
         # print(f"EXAMPLE: {lvltoxp(4)}")
         # print(f"EXAMPLE: {lvltoxp(5)}")
-        print(f"ACTUAL LVL: {((5 / 4) * xp) ** (1 / 3)}")
+        # decimal.Decimal(((5 / 4) * xp) ** (1 / 3))
+        print(f"1/3: {decimal.Decimal(1 / 3)}")
+        print(f"ACTUAL LVL: {((5 / 4) * float(xp)) ** (1/3)}")
         print(f"XPTOLVL: {xptolvl(100)}")
         print(f"xp: {xp}")
         print(f"lvl: {xptolvl(xp)}")
