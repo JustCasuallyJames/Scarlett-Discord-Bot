@@ -79,7 +79,7 @@ class MiscCommands(commands.Cog):
         embed.set_author(name= f"{ctx.message.author.name}", icon_url=f"{ctx.message.author.avatar_url}")
         embed.set_thumbnail(
             url=f"{ctx.message.author.avatar_url}")
-        embed.add_field(name='Level', value=f"{Levels.xptolvl(xp)}", inline=True)
+        embed.add_field(name='Level', value=f"{level}", inline=True)
         embed.add_field(name='XP',
                         value=f"Current exp: {xp-Levels.lvltoxp(level)} out of {Levels.lvltoxp(level+1)-Levels.lvltoxp(level)}",
                         inline=True)
