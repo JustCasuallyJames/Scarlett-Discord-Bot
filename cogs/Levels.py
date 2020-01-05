@@ -45,9 +45,11 @@ class Levels(commands.Cog):
         )
         # print(f"EXAMPLE: {lvltoxp(4)}")
         # print(f"EXAMPLE: {lvltoxp(5)}")
-        # print(f"xp: {xp}")
-        # print(f"lvl: {xptolvl(xp)}")
-        # print(self.is_lvl_up(xp, lvl))
+        print(f"ACTUAL LVL: {((5 / 4) * xp) ** (1 / 3)}")
+        print(f"XPTOLVL: {xptolvl(100)}")
+        print(f"xp: {xp}")
+        print(f"lvl: {xptolvl(xp)}")
+        print(self.is_lvl_up(xp, lvl))
         if self.is_lvl_up(xp, lvl):
             await message.channel.send(f"{message.author.mention} is now level {lvl}")
 
