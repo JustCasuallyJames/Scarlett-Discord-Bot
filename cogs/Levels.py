@@ -29,9 +29,6 @@ class Levels(commands.Cog):
         self.client = client
 
     def is_lvl_up(self, xp, lvl):
-        # print(f"xp: {xp}")
-        # print(f"LVLTOXP: {lvltoxp(lvl)}")
-        # print(xp == lvltoxp(lvl))
         return xp == lvltoxp(lvl)+1
 
     @commands.Cog.listener()
@@ -57,18 +54,13 @@ class Levels(commands.Cog):
             "WHERE user_id = $2 AND guild_id =$3",
             lvl, message.author.id, message.guild.id
         )
-        # print(f"EXAMPLE: {lvltoxp(4)}")
-        # print(f"EXAMPLE: {lvltoxp(5)}")
-        # decimal.Decimal(((5 / 4) * xp) ** (1 / 3))
-        print(f"ACTUAL LVL: {math.floor(((5/4)*xp)**(1/3))}")
-
-        print(f"xp: {xp}")
-        print(f"lvl: {xptolvl(xp)}")
         if self.is_lvl_up(xp, lvl) and lvl > 0:
-            print(True)
-            await message.channel.send(f"{message.author.mention} is now level {lvl}")
-        else:
-            print(False)
+            await message.channel.send(f"{message.author.mention} is now level {lvl}\n"
+                                       f"Upon leveling up, you've been granted 50 coins!")
+            await self.client.pg_con.execute(
+                "UPDATE money.bank SET money = bank.money + $1 WHERE user_id = $2 AND guild_id = $3",
+                100, message.author.id, message.guild.id
+            )
 
 
 def setup(client):

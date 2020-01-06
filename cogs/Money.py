@@ -30,6 +30,7 @@ class Money(commands.Cog):
         return await self.add_coins(member_id, guild_id, -points)
 
     @commands.command()
+    @commands.has_role("Big Bertha")
     async def daily(self, ctx):
         await self.client.pg_con.execute(
             # add a multiplier later...
