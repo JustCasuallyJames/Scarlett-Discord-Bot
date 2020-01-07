@@ -28,7 +28,7 @@ class Errors(commands.Cog):
         if isinstance(error, commands.ExpectedClosingQuoteError):
             return await ctx.send('There is no closing quote.')
         if isinstance(error, commands.CommandNotFound):
-            return
+            return await ctx.send(f"{error}")
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 

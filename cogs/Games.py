@@ -49,8 +49,8 @@ class Games(commands.Cog):
         HEAD_CHOICES = ("Heads", "heads", "h", "hd", "head")
         TAIL_CHOICES = ("Tails", "tails", "t", "tl", "tail")
         # 1 is heads 0 is tails
-        if gamble > bank:
-            await ctx.send("You do not have sufficient funds.")
+        if gamble > bank or gamble == 0:
+            await ctx.send("You have insufficient funds.")
             return
 
         winning_answers = random.choice([HEAD_CHOICES, TAIL_CHOICES])

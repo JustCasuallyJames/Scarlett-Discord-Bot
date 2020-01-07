@@ -54,9 +54,10 @@ class Levels(commands.Cog):
             "WHERE user_id = $2 AND guild_id =$3",
             lvl, message.author.id, message.guild.id
         )
+        LEVEL_UP_MONEY = 100
         if self.is_lvl_up(xp, lvl) and lvl > 0:
             await message.channel.send(f"{message.author.mention} is now level {lvl}\n"
-                                       f"Upon leveling up, you've been granted 50 coins!")
+                                       f"Upon leveling up, you've been granted {LEVEL_UP_MONEY} coins!")
             await self.client.pg_con.execute(
                 "UPDATE money.bank SET money = bank.money + $1 WHERE user_id = $2 AND guild_id = $3",
                 100, message.author.id, message.guild.id
