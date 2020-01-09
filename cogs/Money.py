@@ -1,9 +1,14 @@
 import discord
 from discord.ext import commands
 
-
+import datetime
+import time
 
 class Money(commands.Cog):
+    SEC_TO_NS = 1 / 1_000_000_000
+    MIN_TO_SEC = 1 / 60
+    HOUR_TO_MIN = 1 / 60
+    DAY_TO_HOUR = 1 / 24
 
     def __init__(self, client):
         self.client = client
@@ -29,8 +34,17 @@ class Money(commands.Cog):
     async def sub_coins(self, member_id, guild_id, points):
         return await self.add_coins(member_id, guild_id, -points)
 
+    def convert_to_hour(self, nanoseconds):
+        return nanoseconds * self.SEC_TO_NS * self.MIN_TO_SEC * self.HOUR_TO_MIN
+
+    def convert_to_min(self, nanoseconds):
+        return nanoseconds * self.SEC_TO_NS * self.MIN_TO_SEC
+
+    def convert_to_seconds(self, nanoseconds):
+        return nanoseconds * self.SEC_TO_NS
+
     @commands.command()
-    @commands.has_role("Big Bertha")
+    @commands.cooldown(1, 21600, commands.BucketType.user)
     async def daily(self, ctx):
         await self.client.pg_con.execute(
             # add a multiplier later...
@@ -52,9 +66,9 @@ class Money(commands.Cog):
             """
             UPDATE money.bank SET money = bank.money + $3
             WHERE user_id = $1 AND guild_id = $2
-            """, ctx.message.author.id, ctx.message.guild.id, streak*5
+            """, ctx.message.author.id, ctx.message.guild.id, streak * 5
         )
-        daily_money = 20 + (streak*5)
+        daily_money = 20 + (streak * 5)
         await ctx.send(f"{ctx.message.author.mention} has collected their daily amount of **{daily_money} coins.**")
 
 

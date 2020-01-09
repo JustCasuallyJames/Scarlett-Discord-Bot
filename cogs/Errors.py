@@ -4,6 +4,8 @@ from discord.ext import commands
 import sys
 import traceback
 
+from time import gmtime
+from time import strftime
 
 class Errors(commands.Cog):
 
@@ -29,6 +31,11 @@ class Errors(commands.Cog):
             return await ctx.send('There is no closing quote.')
         if isinstance(error, commands.CommandNotFound):
             return await ctx.send(f"{error}")
+        if isinstance(error, commands.CommandOnCooldown):
+            m, s = divmod(error.retry_after, 60)
+            h, m = divmod(m, 60)
+            return await ctx.send(f"Currently on cooldown. Please wait **{int(h)} hours {int(m)} minutes {int(s)} seconds**")
+
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
