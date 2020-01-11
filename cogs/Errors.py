@@ -35,7 +35,8 @@ class Errors(commands.Cog):
             m, s = divmod(error.retry_after, 60)
             h, m = divmod(m, 60)
             return await ctx.send(f"Currently on cooldown. Please wait **{int(h)} hours {int(m)} minutes {int(s)} seconds**")
-
+        if isinstance(error, commands.NotOwner):
+            return await ctx.send(f"You are not the owner of the server.")
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 

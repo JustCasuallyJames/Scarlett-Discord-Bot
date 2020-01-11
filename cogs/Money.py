@@ -1,14 +1,8 @@
 import discord
 from discord.ext import commands
 
-import datetime
-import time
 
 class Money(commands.Cog):
-    SEC_TO_NS = 1 / 1_000_000_000
-    MIN_TO_SEC = 1 / 60
-    HOUR_TO_MIN = 1 / 60
-    DAY_TO_HOUR = 1 / 24
 
     def __init__(self, client):
         self.client = client
@@ -34,16 +28,7 @@ class Money(commands.Cog):
     async def sub_coins(self, member_id, guild_id, points):
         return await self.add_coins(member_id, guild_id, -points)
 
-    def convert_to_hour(self, nanoseconds):
-        return nanoseconds * self.SEC_TO_NS * self.MIN_TO_SEC * self.HOUR_TO_MIN
-
-    def convert_to_min(self, nanoseconds):
-        return nanoseconds * self.SEC_TO_NS * self.MIN_TO_SEC
-
-    def convert_to_seconds(self, nanoseconds):
-        return nanoseconds * self.SEC_TO_NS
-
-    @commands.command()
+    @commands.command(aliases=["DAILY"])
     @commands.cooldown(1, 1080, commands.BucketType.user)
     async def daily(self, ctx):
         await self.client.pg_con.execute(
@@ -70,6 +55,41 @@ class Money(commands.Cog):
         )
         daily_money = 20 + (streak * 5)
         await ctx.send(f"{ctx.message.author.mention} has collected their daily amount of **{daily_money} coins.**")
+
+    @commands.command()
+    async def give(self, ctx, member: discord.Member, *, money: int):
+        member_giver = ctx.message.author
+        guild_id_giver = ctx.message.guild.id
+        bank = await self.get_coins(member_giver.id, guild_id_giver)
+
+        if money > bank or money == 0:
+            await ctx.send("You have insufficient funds.")
+            return
+
+        await self.client.pg_con.execute(
+            """
+            UPDATE money.bank SET money = bank.money + $1 
+            WHERE user_id = $2 AND guild_id = $3
+            """, money, member.id, member.guild.id
+        )
+        await self.client.pg_con.execute(
+            """
+            UPDATE money.bank SET money = bank.money - $1 
+            WHERE user_id = $2 AND guild_id = $3
+            """, money, member_giver.id, guild_id_giver
+        )
+        return await ctx.send(f"{member_giver.mention} has given {member.mention} {money} coins!")
+
+    @commands.command()
+    @commands.is_owner()
+    async def addmoney(self, ctx, member: discord.Member, *, money: int):
+        await self.client.pg_con.execute(
+            """
+            UPDATE money.bank SET money = bank.money + $1 
+            WHERE user_id = $2 AND guild_id = $3
+            """, money, member.id, member.guild.id
+        )
+        return await ctx.send(f"{member.mention} was given {money} coins")
 
 
 def setup(client):

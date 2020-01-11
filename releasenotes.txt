@@ -19,3 +19,9 @@ RELEASE NOTES:
 -Added more functions to the help method 
 -Separated coin functions into 3
 -Daily function will now also include a daily_streak
+
+1/10/2020
+-Give function is now available to everyone to donate
+-Add function is mainly for the owner
+-Fixed bug where money wasn't given to new comers
+-Added cooldowns

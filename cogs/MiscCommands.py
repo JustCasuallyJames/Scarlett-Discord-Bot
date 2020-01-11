@@ -36,7 +36,7 @@ class MiscCommands(commands.Cog):
             description="My name is **Scarlett**. I'm named after the Scarlet Spider in the Spiderman comics."
                         "Though, in this world, I'm just a bot who can be used to play games or play music! "
                         "Even though it seems like a little bit now, but later on I'll be able to provide you with"
-                        "adventure games!",
+                        " adventure games!",
             colour=discord.Colour.purple()
         )
         embed.set_author(name="Scarlett",
