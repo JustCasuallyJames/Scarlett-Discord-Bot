@@ -44,7 +44,7 @@ class Money(commands.Cog):
         return nanoseconds * self.SEC_TO_NS
 
     @commands.command()
-    @commands.cooldown(1, 21600, commands.BucketType.user)
+    @commands.cooldown(1, 1080, commands.BucketType.user)
     async def daily(self, ctx):
         await self.client.pg_con.execute(
             # add a multiplier later...
