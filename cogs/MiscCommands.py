@@ -21,7 +21,7 @@ class MiscCommands(commands.Cog):
             colour=discord.Colour.purple()
         )
         embed.set_author(name="Scarlett",
-                         icon_url='https://cdn.discordapp.com/attachments/640127172148985861/661150910055186472/spider.png')
+                         icon_url='https://cdn.discordapp.com/attachments/381281623246897162/665349252775411722/discord-scarlett.png')
         embed.add_field(name='8ball', value="8ball can tell you your fortune if you ask it a question!\n"
                                             "Make sure to do **.8ball [Insert question]**", inline=False)
         embed.add_field(name='About', value="Make sure to do **.about**", inline=False)
@@ -39,10 +39,8 @@ class MiscCommands(commands.Cog):
                         "adventure games!",
             colour=discord.Colour.purple()
         )
-        embed.set_thumbnail(
-            url="https://cdn.discordapp.com/attachments/640127172148985861/661150910055186472/spider.png")
         embed.set_author(name="Scarlett",
-                         icon_url='https://cdn.discordapp.com/attachments/640127172148985861/661150910055186472/spider.png')
+                         icon_url='https://cdn.discordapp.com/attachments/381281623246897162/665349252775411722/discord-scarlett.png')
         embed.add_field(name='Help', value="Try doing **.help**", inline=False)
         embed.add_field(name='Music', value="To get started, do **.play**", inline=False)
         embed.add_field(name='Games', value="Try doing **.games**", inline=False)
