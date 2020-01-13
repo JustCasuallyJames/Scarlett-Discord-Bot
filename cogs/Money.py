@@ -35,7 +35,7 @@ class Money(commands.Cog):
             # add a multiplier later...
             """
             INSERT INTO money.bank(guild_id, user_id, money,daily_streak)
-            VALUES ($1, $2, 10, 0)
+            VALUES ($1, $2, 20, 0)
             ON CONFLICT (user_id, guild_id) DO
             UPDATE SET money = bank.money + $3, daily_streak = bank.daily_streak + 1 
             """, ctx.message.guild.id, ctx.message.author.id, 20
@@ -61,23 +61,17 @@ class Money(commands.Cog):
         member_giver = ctx.message.author
         guild_id_giver = ctx.message.guild.id
         bank = await self.get_coins(member_giver.id, guild_id_giver)
-
         if money > bank or money == 0:
             await ctx.send("You have insufficient funds.")
             return
-
-        await self.client.pg_con.execute(
-            """
-            UPDATE money.bank SET money = bank.money + $1 
-            WHERE user_id = $2 AND guild_id = $3
-            """, money, member.id, member.guild.id
-        )
-        await self.client.pg_con.execute(
-            """
-            UPDATE money.bank SET money = bank.money - $1 
-            WHERE user_id = $2 AND guild_id = $3
-            """, money, member_giver.id, guild_id_giver
-        )
+        if member.bot:
+            await ctx.send("You can't give money to bots.")
+            return
+        if member_giver.id is member.id:
+            await ctx.send("You can't give money to yourself.")
+            return
+        await self.add_coins(member.id, member.guild.id, money)
+        await self.sub_coins(member_giver.id, guild_id_giver, money)
         return await ctx.send(f"{member_giver.mention} has given {member.mention} {money} coins!")
 
     @commands.command()

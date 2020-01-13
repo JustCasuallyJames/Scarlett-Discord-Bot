@@ -1,10 +1,8 @@
-import discord
-from discord.ext import commands
-
 import math
 import decimal
 
-decimal.getcontext().prec = 28
+import discord
+from discord.ext import commands
 
 
 def xptolvl(xp):
@@ -25,9 +23,7 @@ class Levels(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.bot:
-            return
-        if message.content.startswith("."):
+        if message.author.bot or message.content.startswith("."):
             return
 
         xp = await self.client.pg_con.fetchval(

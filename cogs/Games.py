@@ -9,37 +9,8 @@ class Games(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['8ball'])
-    async def _8ball(self, ctx, *, question=None):
-        if question is None:
-            await ctx.send(f"You need to ask a question!")
-        else:
-            # good responses
-            responses = ['It is certain.',
-                         'It is decidedly so.',
-                         'Without a doubt.',
-                         'Yes-definitely.',
-                         'You may rely on it.',
-                         'As I see it, yes.',
-                         'Most likely.',
-                         'Outlook good.',
-                         'Yes.',
-                         'Signs points to yes.',
-                         # neutral responses
-                         'Reply hazy, try again.',
-                         'Ask again later.',
-                         'Better not tell you now.',
-                         'Cannot predict now.',
-                         'Concentrate and ask again.',
-                         # negative responses
-                         "Don't count on it.",
-                         'My reply is no.',
-                         'My sources say no.',
-                         'Outlook not so good.',
-                         'Very doubtful']
-            await ctx.send(f"Question: {question}\nAnswer: {random.choice(responses)}")
-
     @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def coinflip(self, ctx, choice: str, *, gamble: int):
         member = ctx.message.author
         guild_id = ctx.message.guild.id
@@ -60,6 +31,30 @@ class Games(commands.Cog):
         else:
             await cog.sub_coins(member.id, guild_id, gamble)
             await ctx.send(f"Flip: {winning_answers[0]}. You lost {gamble} coins!")
+
+    # for the countdown, maybe can do the reaction countdown. ie 10 9 8 7 6 after every second then delete
+    # the message afterwards?
+    # def chicken_fight_one(self, name1, name2):
+    #     possible_choices_name1 = [f"{name1} pecks {name2}",
+    #                               f"{name1} flies and does a flying roundhouse kick on {name2}",
+    #                               f"{name1} catches {name2} off guard and proceeds to do the primary lotus on {name2}\n",
+    #                               f"{name1} grabs onto {name2} leg and throws up against the ring railing",
+    #                               f"",
+    #                               f"",
+    #                               f"",
+    #                               ]
+    #     return f"""
+    #     {name1}, the chicken, and {name2}, the chicken enter the ring.\n
+    #     {name1} swoops in and knocks {name2} off their legs. {name2} falls but manages to\n
+    #     land a peck in the eye of {name1}. {name1} is currently blinded and can't see anything.\n
+    #     {name2} takes this opportunity to attack to bring {name1} down. {name2} keeps {name1} pinned\n
+    #     down with {name1} not being able to escape. 10 seconds pass and {name1} taps out!
+    #     {name2} wins the cockfight!
+    #     """
+
+    # @commands.command(aliases=["chickenfight"])
+    # async def chicken_fight(self):
+    #     fight_scene=
 
 
 def setup(client):

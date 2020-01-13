@@ -13,10 +13,10 @@ class GuildEvents(commands.Cog):
     async def on_member_join(self, member):
         # This doesn't show the bot joining because it can't consider itself joining
         print(f'{member} has joined the server.')
+        if member.bot:
+            return
         role = discord.utils.get(member.guild.roles, name='Casual Crew')
         await member.add_roles(role)
-        # sends the user a DM
-        await member.send(f"You've been awarded the **{role}** role")
         channel = member.guild.get_channel(661163292311552040)
         embed = discord.Embed(
             title="**Welcome**",

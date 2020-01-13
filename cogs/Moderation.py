@@ -12,6 +12,9 @@ class Moderation(commands.Cog):
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount + 1)
 
+    @commands.Cog.listener()
+    async def spam_protection(self):
+        return
 
 def setup(client):
     client.add_cog(Moderation(client))
