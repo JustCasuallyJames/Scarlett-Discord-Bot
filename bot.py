@@ -20,11 +20,12 @@ async def get_prefix(client, message):
     return prefixes.get(str(message.guild.id), '.')
 
 
-client = commands.Bot(command_prefix=get_prefix, activity=discord.Game(name=".help"))
+client = commands.Bot(command_prefix=get_prefix, activity=discord.Game(name=".help to find out more commands"))
 client.remove_command('help')
 
 
 async def create_db_pool():
+    #subcription server port is 9052
     # changed the default port to 8131
     client.pg_con = await asyncpg.create_pool(database="EconomyDB", user="postgres", password=dbkey.key, port=8131)
 

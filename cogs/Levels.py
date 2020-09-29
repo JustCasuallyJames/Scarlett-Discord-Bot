@@ -25,7 +25,6 @@ class Levels(commands.Cog):
     async def on_message(self, message):
         if message.author.bot or message.content.startswith("."):
             return
-
         xp = await self.client.pg_con.fetchval(
             """
             INSERT INTO levels.users(user_id, guild_id, lvl, xp)

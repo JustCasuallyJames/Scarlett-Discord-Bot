@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 
 import json
 
@@ -15,8 +16,11 @@ class GuildEvents(commands.Cog):
         print(f'{member} has joined the server.')
         if member.bot:
             return
-        role = discord.utils.get(member.guild.roles, name='Casual Crew')
+        role = get(member.guild.roles, name='Casual Crew')
         await member.add_roles(role)
+        # 661163292311552040 this is my justcasuallychillin discord server
+        #list_channels = member.guild.text_channels #this grab a list of the text channels
+        # welcome_channel = get(member.server.channels, name="general")
         channel = member.guild.get_channel(661163292311552040)
         embed = discord.Embed(
             title="**Welcome**",

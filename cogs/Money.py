@@ -32,6 +32,7 @@ class Money(commands.Cog):
     @commands.cooldown(1, 1080, commands.BucketType.user)
     async def daily(self, ctx):
         await self.client.pg_con.execute(
+            # this executes the thing in database
             # add a multiplier later...
             """
             INSERT INTO money.bank(guild_id, user_id, money,daily_streak)
@@ -84,6 +85,42 @@ class Money(commands.Cog):
             """, money, member.id, member.guild.id
         )
         return await ctx.send(f"{member.mention} was given {money} coins")
+
+    @commands.command()
+    async def wallet(self, ctx, *, member: discord.Member = None):
+        if member is not None:
+            money = await self.client.pg_con.fetchval(
+                """
+                SELECT money FROM money.bank
+                WHERE user_id = $1 AND guild_id = $2
+                LIMIT 1
+                """, member.id, member.guild.id
+            )
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.set_author(name=f"{member}",
+                             icon_url=f"{member.avatar_url}")
+            embed.add_field(name='Wallet', value=f"{money} coins", inline=False)
+
+            await ctx.send(embed=embed)
+        else:
+            money = await self.client.pg_con.fetchval(
+                """
+                SELECT money FROM money.bank
+                WHERE user_id = $1 AND guild_id = $2
+                LIMIT 1
+                """, ctx.message.author.id, ctx.message.guild.id
+            )
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.set_author(name=f"{ctx.message.author}",
+                             icon_url=f"{ctx.message.author.avatar_url}")
+            embed.add_field(name='Wallet', value=f"{money} coins", inline=False)
+
+            await ctx.send(embed=embed)
+
 
 
 def setup(client):

@@ -20,6 +20,8 @@ class Errors(commands.Cog):
         # Happens when a member without the required role tries to type a command.
         if isinstance(error, commands.MissingRole):
             return await ctx.send(f"You don't have the **{error.missing_role}** role that is required to do this.")
+        # if isinstance(error, commands.MissingAnyRole):
+        #     return await ctx.send(f"You don't have the **{error.missing_roles}** role that is required to do this.")
         # Happens when a member puts in the wrong argument into the command
         if isinstance(error, commands.BadArgument):
             return await ctx.send(f"{error}")
@@ -37,6 +39,8 @@ class Errors(commands.Cog):
             return await ctx.send(f"Currently on cooldown. Please wait **{int(h)} hours {int(m)} minutes {int(s)} seconds**")
         if isinstance(error, commands.NotOwner):
             return await ctx.send(f"You are not the owner of the server.")
+        if isinstance(error, commands.CommandInvokeError):
+            return await ctx.send(f"You don't have the permissions to affect someone of higher rank than you.")
         print(f"Ignoring exception in command {ctx.command}", file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 

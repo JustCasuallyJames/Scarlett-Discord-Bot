@@ -10,27 +10,44 @@ class Games(commands.Cog):
         self.client = client
 
     @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def coinflip(self, ctx, choice: str, *, gamble: int):
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def coinflip(self, ctx, choice: str, *, gamble):
         member = ctx.message.author
         guild_id = ctx.message.guild.id
         cog = self.client.get_cog("Money")
         bank = await cog.get_coins(member.id, guild_id)
-
+        all = "ALL"
         HEAD_CHOICES = ("Heads", "heads", "h", "hd", "head")
         TAIL_CHOICES = ("Tails", "tails", "t", "tl", "tail")
-        # 1 is heads 0 is tails
-        if gamble > bank or gamble == 0:
-            await ctx.send("You have insufficient funds.")
-            return
-
-        winning_answers = random.choice([HEAD_CHOICES, TAIL_CHOICES])
-        if choice in winning_answers:
-            await cog.add_coins(member.id, guild_id, gamble)
-            await ctx.send(f"Flip: {winning_answers[0]}. You won {gamble} coins!")
+        if gamble in f"{all.lower()}":
+            if bank == 0:
+                await ctx.send("You have insufficient funds.")
+            else:
+                winning_answers = random.choice([HEAD_CHOICES, TAIL_CHOICES])
+                if choice.lower() in winning_answers:  # this is a checking if your choice is within the tuple, winning_answers
+                    await cog.add_coins(member.id, guild_id, bank)
+                    await ctx.send(f"Flip: {winning_answers[0]}. You won {bank} coins!")
+                else:
+                    await cog.sub_coins(member.id, guild_id, bank)
+                    await ctx.send(f"Flip: {winning_answers[0]}. You lost {bank} coins!")
         else:
-            await cog.sub_coins(member.id, guild_id, gamble)
-            await ctx.send(f"Flip: {winning_answers[0]}. You lost {gamble} coins!")
+            if int(gamble) > bank or int(gamble) == 0:
+                await ctx.send("You have insufficient funds.")
+                return
+            else:
+                winning_answers = random.choice([HEAD_CHOICES, TAIL_CHOICES])
+                # 1 is heads 0 is tails
+                if choice.lower() in winning_answers:  # this is a checking if your choice is within the tuple, winning_answers
+                    await cog.add_coins(member.id, guild_id, int(gamble))
+                    await ctx.send(f"Flip: {winning_answers[0]}. You won {int(gamble)} coins!")
+                else:
+                    await cog.sub_coins(member.id, guild_id, int(gamble))
+                    await ctx.send(f"Flip: {winning_answers[0]}. You lost {int(gamble)} coins!")
+
+
+
+
+
 
     # for the countdown, maybe can do the reaction countdown. ie 10 9 8 7 6 after every second then delete
     # the message afterwards?
